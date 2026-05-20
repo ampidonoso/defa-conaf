@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# defa-conaf
 
-## Getting Started
+Balance Presupuestario Mensual CONAF · automatización del flujo SIGFE.
 
-First, run the development server:
+Monorepo con dos paquetes:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+defa-conaf/
+├── api/              Parser SIGFE (Next.js)
+├── ui/               Interfaz visual (Vite + React + Shadcn + Supabase)
+├── blcemensual/      Datos CONAF reales · gitignored
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## `/api` · parser SIGFE
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js. Lee los reportes del Sistema de Información para la Gestión Financiera del Estado (SIGFE) y los transforma en estructura procesable.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd api
+npm install
+npm run dev   # http://localhost:3000
+```
 
-## Learn More
+## `/ui` · interfaz visual
 
-To learn more about Next.js, take a look at the following resources:
+Vite + React + Shadcn UI + Supabase. UI de exploración y exportación de balances.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd ui
+bun install
+bun run dev   # http://localhost:5173
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Requiere `ui/.env` con credenciales Supabase (ver `ui/.env.example` si existe, o configurar manualmente).
 
-## Deploy on Vercel
+## `/blcemensual` · datos institucionales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Carpeta con XLS, DOCX y previews del Balance Presupuestario. **No va al repo** (gitignored) por contener datos institucionales sensibles.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Para correr el parser con datos reales, descargá los XLS desde SIGFE y colocálos acá.
+
+## Stack
+
+- **Backend / parser**: Next.js 15, TypeScript
+- **Frontend / UI**: Vite, React, Shadcn UI, Tailwind, Supabase
+- **Testing UI**: Playwright + Vitest
+- **Lenguaje**: TypeScript en todo
+
+## Despliegue
+
+- `/api` se despliega como Next.js app (Vercel o Cloudflare).
+- `/ui` se despliega como SPA estática (Vercel, Netlify o Cloudflare Pages).
+- La data nunca sale del entorno local. SIGFE no expone API pública, se trabaja con descargas manuales.
+
+## Autora
+
+Amparo Donoso Rodríguez · Abogada Provincial OP Ranco · CONAF Los Ríos · 2026
